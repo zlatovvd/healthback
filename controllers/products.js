@@ -1,5 +1,14 @@
 const { Product, Intake } = require("../model");
-const { controllerWrapper, createIntake } = require("../helpers");
+const { controllerWrapper, createIntake, HttpError } = require("../helpers");
+
+const getProducts = async (req, res) => {
+  const products = await Product.find();
+  console.log('products', products);
+  if(!products) {
+    throw HttpError(404, "Not found");
+  }
+  return res.json(products);
+}
 
 const getByName = async (req, res) => {
   const query = req.params.product;
@@ -14,8 +23,15 @@ const getIntake = async (req, res) => {
   const result = await Intake.findOne({ owner });
   console.log('result get', result);
   if (!result) {
-    console.log('error 404');
+    console.log('error 404 no');
     throw HttpError(404, "Not found");
+    // result = {
+    //   height: '0',
+    //   age: '0',
+    //   cweight: '0',
+    //   dweight: '0',
+    //   typeblood: 1,
+    // }
   }
 
   res.json(result);
@@ -61,6 +77,7 @@ const updateIntake = async (req, res) => {
 };
 
 module.exports = {
+  getProducts: controllerWrapper(getProducts),
   getByName: controllerWrapper(getByName),
   getIntake: controllerWrapper(getIntake),
   saveIntake: controllerWrapper(saveIntake),
