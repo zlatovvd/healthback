@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 const productSchema = new Schema({
-  categories: String,
+  categories: [String],
   weight: Number,
   title: {
     ru: String,
