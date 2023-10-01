@@ -18,6 +18,6 @@ productsRouter.get('/intake', authenticate, getIntake);
 
 productsRouter.post('/intake', authenticate, saveIntake);
 
-productsRouter.put('/intake/:userId', authenticate, updateIntake);
+productsRouter.put('/intake', authenticate, updateIntake);
 
 module.exports = productsRouter;

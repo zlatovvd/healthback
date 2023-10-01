@@ -3,7 +3,7 @@ const { controllerWrapper, createIntake, HttpError } = require("../helpers");
 
 const getProducts = async (req, res) => {
   const products = await Product.find();
-  console.log('products', products);
+  
   if(!products) {
     throw HttpError(404, "Not found");
   }
@@ -60,12 +60,11 @@ const saveIntake = async (req, res) => {
 };
 
 const updateIntake = async (req, res) => {
-  console.log("update", req.body);
-  // const { typeblood, height, age, cweight, dweight, _id } = req.body;
-  const { userId } = req.params;
- 
+
+  const { _id: id } = req.body;
+
   const result = await Intake.findByIdAndUpdate(
-    userId, req.body, { new: true }
+    id, req.body, { new: true }
   );
 
   if (!result) {
