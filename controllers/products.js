@@ -10,6 +10,10 @@ const getProducts = async (req, res) => {
   return res.json(products);
 }
 
+const getByBlood = async (req, res) => {
+  const products = await Product.distinct(3)
+}
+
 const getByName = async (req, res) => {
   const query = req.params.product;
   const products = await Product.find({ "title.ua": { $regex: query } });
