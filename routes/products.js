@@ -5,6 +5,7 @@ const {
   saveIntake,
   updateIntake,
   getProducts,
+  getNotRecommended,
 } = require("../controllers/products");
 const authenticate = require('../middlewares/authenticate');
 
@@ -15,6 +16,8 @@ productsRouter.get('/search/:product', getByName);
 productsRouter.get('/', getProducts);
 
 productsRouter.get('/intake', authenticate, getIntake);
+
+productsRouter.get('/intake/:typeblood', getNotRecommended);
 
 productsRouter.post('/intake', authenticate, saveIntake);
 

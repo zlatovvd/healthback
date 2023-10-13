@@ -21,14 +21,54 @@ const getByName = async (req, res) => {
   return res.json(products);
 };
 
+const getNotRecommended = async (req, res) => {
+
+  const typeblood = req.params.typeblood;
+  const filter={};
+
+  switch (typeblood) {
+    case 1 : 
+      filter = {'groupBloodNotAllowed.1':true};
+      break;
+    case 2 :
+      filter = {'groupBloodNotAllowed.2':true};
+      break;
+    case 3 :
+      filter = {'groupBloodNotAllowed.3':true};
+      break;
+    case 4 :
+      filter = {'groupBloodNotAllowed.4':true};
+      break;    
+  }
+  
+  const products = await Product.find(filter);
+
+  const notRecommended = [];
+
+  if (products) {
+    products.map(item => {
+         
+      if (
+        item.groupBloodNotAllowed[typeblood] === true &&
+        !notRecommended.includes(item.categories[0])
+      ) {
+        notRecommended.push(item.categories[0]);
+      }
+    });
+  }
+
+  return res.json(notRecommended);
+
+}
+
 const getIntake = async (req, res) => {
   const { _id: owner } = req.user;
 
   const result = await Intake.findOne({ owner });
-  console.log('result get', result);
-  if (!result) {
-    console.log('error 404 no');
-    throw HttpError(404, "Not found");
+  
+ // if (!result) {
+  //  console.log('error 404 no');
+   // throw HttpError(404, "Not found");
     // result = {
     //   height: '0',
     //   age: '0',
@@ -36,7 +76,7 @@ const getIntake = async (req, res) => {
     //   dweight: '0',
     //   typeblood: 1,
     // }
-  }
+  //}
 
   res.json(result);
 };
@@ -65,10 +105,14 @@ const saveIntake = async (req, res) => {
 
 const updateIntake = async (req, res) => {
 
-  const { _id: id } = req.body;
+  //const { _id: id } = req.body;
 
-  const result = await Intake.findByIdAndUpdate(
-    id, req.body, { new: true }
+  const {_id:owner} = req.user;
+
+ console.log('id', owner);
+
+  const result = await Intake.findOneAndUpdate(
+    [owner], req.body, { new: true }
   );
 
   if (!result) {
@@ -82,6 +126,7 @@ const updateIntake = async (req, res) => {
 module.exports = {
   getProducts: controllerWrapper(getProducts),
   getByName: controllerWrapper(getByName),
+  getNotRecommended: controllerWrapper(getNotRecommended),
   getIntake: controllerWrapper(getIntake),
   saveIntake: controllerWrapper(saveIntake),
   updateIntake: controllerWrapper(updateIntake),
