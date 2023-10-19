@@ -24,6 +24,7 @@ const getByName = async (req, res) => {
 const getNotRecommended = async (req, res) => {
 
   const typeblood = req.params.typeblood;
+  console.log(typeblood);
   const filter={};
 
   switch (typeblood) {
@@ -64,8 +65,10 @@ const getNotRecommended = async (req, res) => {
 const getIntake = async (req, res) => {
   const { _id: owner } = req.user;
 
+  console.log('owner', owner);
+
   const result = await Intake.findOne({ owner });
-  
+  console.log('result', result);
  // if (!result) {
   //  console.log('error 404 no');
    // throw HttpError(404, "Not found");
@@ -105,21 +108,27 @@ const saveIntake = async (req, res) => {
 
 const updateIntake = async (req, res) => {
 
-  //const { _id: id } = req.body;
-
   const {_id:owner} = req.user;
 
- console.log('id', owner);
+  const {typeblood} = req.body;
+
+  const queryName = `groupBloodNotAllowed.${typeblood}`;
+
+  const notproducts = await Product.find({ [queryName]: true }).distinct(
+    "categories"
+  );
 
   const result = await Intake.findOneAndUpdate(
-    [owner], req.body, { new: true }
+    {owner}, {...req.body, notproducts}, { new: true }
   );
+
+  console.log('result', result);
 
   if (!result) {
     throw HttpError(404, "Not found");
   }
 
-  res.json(result);
+  res.status(200).json(result);
  
 };
 
