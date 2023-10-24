@@ -24,7 +24,7 @@ const getByName = async (req, res) => {
 const getNotRecommended = async (req, res) => {
 
   const typeblood = req.params.typeblood;
-  console.log(typeblood);
+
   const filter={};
 
   switch (typeblood) {
@@ -65,10 +65,10 @@ const getNotRecommended = async (req, res) => {
 const getIntake = async (req, res) => {
   const { _id: owner } = req.user;
 
-  console.log('owner', owner);
+  //console.log('owner', owner);
 
   const result = await Intake.findOne({ owner });
-  console.log('result', result);
+  //console.log('result', result);
  // if (!result) {
   //  console.log('error 404 no');
    // throw HttpError(404, "Not found");
@@ -122,7 +122,7 @@ const updateIntake = async (req, res) => {
     {owner}, {...req.body, notproducts}, { new: true }
   );
 
-  console.log('result', result);
+  //console.log('result', result);
 
   if (!result) {
     throw HttpError(404, "Not found");

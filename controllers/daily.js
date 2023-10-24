@@ -23,8 +23,12 @@ const remove = async (req, res) => {
 
 const getDaily = async (req, res) => {
     const { productDate } = req.params;
+    //const productDate = '2023-10-23';
     const { _id: owner } = req.user;
-    const result = await DailyProduct.find({ date: productDate, owner });
+    const result = await DailyProduct.find({ date: {$eq: new Date(productDate)}, owner });
+    
+    console.log('daily date', productDate);
+    console.log('daily product', result);
     if (!result) {
         throw HttpError(404);
     }
