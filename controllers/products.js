@@ -24,39 +24,43 @@ const getByName = async (req, res) => {
 const getNotRecommended = async (req, res) => {
 
   const typeblood = req.params.typeblood;
+  const queryName = `groupBloodNotAllowed.${typeblood}`;
+  const notRecommended = await Product.find({ [queryName]: true }).distinct(
+    "categories"
+  );
 
-  const filter={};
+  // const filter={};
 
-  switch (typeblood) {
-    case 1 : 
-      filter = {'groupBloodNotAllowed.1':true};
-      break;
-    case 2 :
-      filter = {'groupBloodNotAllowed.2':true};
-      break;
-    case 3 :
-      filter = {'groupBloodNotAllowed.3':true};
-      break;
-    case 4 :
-      filter = {'groupBloodNotAllowed.4':true};
-      break;    
-  }
+  // switch (typeblood) {
+  //   case 1 : 
+  //     filter = {'groupBloodNotAllowed.1':true};
+  //     break;
+  //   case 2 :
+  //     filter = {'groupBloodNotAllowed.2':true};
+  //     break;
+  //   case 3 :
+  //     filter = {'groupBloodNotAllowed.3':true};
+  //     break;
+  //   case 4 :
+  //     filter = {'groupBloodNotAllowed.4':true};
+  //     break;    
+  // }
   
-  const products = await Product.find(filter);
+  // const products = await Product.find(filter);
 
-  const notRecommended = [];
+  // const notRecommended = [];
 
-  if (products) {
-    products.map(item => {
+  // if (products) {
+  //   products.map(item => {
          
-      if (
-        item.groupBloodNotAllowed[typeblood] === true &&
-        !notRecommended.includes(item.categories[0])
-      ) {
-        notRecommended.push(item.categories[0]);
-      }
-    });
-  }
+  //     if (
+  //       item.groupBloodNotAllowed[typeblood] === true &&
+  //       !notRecommended.includes(item.categories[0])
+  //     ) {
+  //       notRecommended.push(item.categories[0]);
+  //     }
+  //   });
+  // }
 
   return res.json(notRecommended);
 
