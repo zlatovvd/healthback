@@ -17,7 +17,6 @@ const getByBlood = async (req, res) => {
 const getByName = async (req, res) => {
   const query = req.params.product;
   const products = await Product.find({ "title.ua": { $regex: query } });
-
   return res.json(products);
 };
 
@@ -29,39 +28,6 @@ const getNotRecommended = async (req, res) => {
     "categories"
   );
 
-  // const filter={};
-
-  // switch (typeblood) {
-  //   case 1 : 
-  //     filter = {'groupBloodNotAllowed.1':true};
-  //     break;
-  //   case 2 :
-  //     filter = {'groupBloodNotAllowed.2':true};
-  //     break;
-  //   case 3 :
-  //     filter = {'groupBloodNotAllowed.3':true};
-  //     break;
-  //   case 4 :
-  //     filter = {'groupBloodNotAllowed.4':true};
-  //     break;    
-  // }
-  
-  // const products = await Product.find(filter);
-
-  // const notRecommended = [];
-
-  // if (products) {
-  //   products.map(item => {
-         
-  //     if (
-  //       item.groupBloodNotAllowed[typeblood] === true &&
-  //       !notRecommended.includes(item.categories[0])
-  //     ) {
-  //       notRecommended.push(item.categories[0]);
-  //     }
-  //   });
-  // }
-
   return res.json(notRecommended);
 
 }
@@ -69,21 +35,7 @@ const getNotRecommended = async (req, res) => {
 const getIntake = async (req, res) => {
   const { _id: owner } = req.user;
 
-  //console.log('owner', owner);
-
   const result = await Intake.findOne({ owner });
-  //console.log('result', result);
- // if (!result) {
-  //  console.log('error 404 no');
-   // throw HttpError(404, "Not found");
-    // result = {
-    //   height: '0',
-    //   age: '0',
-    //   cweight: '0',
-    //   dweight: '0',
-    //   typeblood: 1,
-    // }
-  //}
 
   res.json(result);
 };
@@ -125,8 +77,6 @@ const updateIntake = async (req, res) => {
   const result = await Intake.findOneAndUpdate(
     {owner}, {...req.body, notproducts}, { new: true }
   );
-
-  //console.log('result', result);
 
   if (!result) {
     throw HttpError(404, "Not found");

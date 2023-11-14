@@ -24,3 +24,9 @@ app.use((err, req, res, next) => {
 })
 
 module.exports = app;
+
+// DB_HOST=mongodb+srv://vasyl:k8opJ3kpTZ9JbsUb@cluster0.v95caoh.mongodb.net/db-contacts?retryWrites=true&w=majority
+// DB_HOST1=mongodb+srv://zlatovvd:fSuQR7JLhKlRWnaZ@cluster0.kkhlnud.mongodb.net/
+// SECRET_KEY=yNa(xLVwrB@}+_(bh3gD]MJ.~K?D:F
+// LOGIN=vasyl
+// PASSWORD=k8opJ3kpTZ9JbsUb
