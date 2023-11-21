@@ -13,10 +13,7 @@ const register = async (req, res) => {
   const user = await User.findOne({ email });
 
   if (user) {
-    console.log('error 409');
-    const error = HttpError(409, 'User already ');
-    console.log('error http', error)
-    throw error;
+    throw HttpError(409);
   }
 
   const hashPassword = await bcrypt.hash(password, 10);

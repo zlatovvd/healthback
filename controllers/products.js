@@ -15,7 +15,7 @@ const getByBlood = async (req, res) => {
 }
 
 const getByName = async (req, res) => {
-  const query = req.params.product;
+  const query = "(?-i)"+req.params.product;
   const products = await Product.find({ "title.ua": { $regex: query } });
   return res.json(products);
 };
